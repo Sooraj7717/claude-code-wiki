@@ -1,0 +1,49 @@
+       =========================================================
+       [1] PILOT PHASE: Discover Patterns & Write PLAYBOOK.md
+       =========================================================
+
+ [Orchestrator]
+       │
+       ├─► (Spawns Single Worker) ──► [Worker Agent] (Migrates Pilot Project)
+       │                                    │
+       │                                    ▼
+       │                             [Critic Agent] (Audits for Flaws)
+       │                                    │
+       │   ┌────────────────────────────────┘
+       ▼   ▼
+ [PLAYBOOK.md Created]
+       │
+       ▼
+       =========================================================
+       [2] FAN-OUT PHASE: Dependency-Aware Escalating Batches
+       =========================================================
+       │
+       ▼
+ [Orchestrator Build Graph (DAG)]
+       │
+       ├─► [BATCH 1: Core / Shared Libs] ──► (Parallel Workers 1..N) ──► [Pass] ──┐
+       │                                                                          │
+       └─► [BATCH 2: Upstream Apps]     ──► (Parallel Workers 1..N) ──► [Pass] ──┼─► [Success]
+                                                                                  │
+       =========================================================                  │
+       [3] THE ADVERSARIAL LOOP (Happens per Project in parallel)                  │
+       =========================================================                  │
+                                                                                  │
+          ┌─────────────────── [Orchestrator] ──────────────────┐                 │
+          │                             ▲                       │                 │
+          ▼                             │ (Logs / Traces)       ▼                 │
+    [Worker Agent] ──► (Diffs) ──► [Critic Agent] ──► [Verification Agent]       │
+          ▲                             │                  │                      │
+          │                             ▼                  ▼                      │
+          └─────────── [Fail] ─── (Fix Prompt) ◄──── [Build Error]                │
+                                                                                  │
+       =========================================================                  │
+       [4] SAFEGUARDS & FINALIZE                                                  │
+       =========================================================                  │
+                                                                                  │
+    [Batch Failure Rate > Limit] ─────────────────────────────────────────────────┤
+          │                                                                       │
+          ▼                                                                       ▼
+   TRIP CIRCUITS!                                                         WRITE ARTIFACTS
+  (Freeze Workers &                                                      ├─► DELTA_CATALOG.md
+  Await Human Input)                                                     └─► UPLIFT_NOTES.md
