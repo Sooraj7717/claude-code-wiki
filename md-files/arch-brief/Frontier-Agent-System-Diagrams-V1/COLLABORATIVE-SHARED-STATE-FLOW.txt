@@ -1,0 +1,108 @@
+FRONTIER — COLLABORATIVE (SHARED STATE) FLOW
+==============================================
+
+Agents operate as isolated collaborators around shared Frontier state.
+They do NOT communicate directly.
+Frontier remains the shared-state authority and serializes transitions.
+
+
+                    ┌─────────────────────────────┐
+                    │       SHARED FRONTIER       │
+                    │          STATE STORE        │
+                    │                             │
+                    │ Project State               │
+                    │ Current Plan                │
+                    │ Tasks / DAG                 │
+                    │ Evidence / Artifacts        │
+                    │ Acceptance Criteria         │
+                    └─────────────┬───────────────┘
+                                  │
+             ┌────────────────────┼────────────────────┐
+             │                    │                    │
+             ▼                    ▼                    ▼
+   ┌────────────────┐   ┌────────────────┐   ┌────────────────┐
+   │ Repository     │   │    PLANNER      │   │     WORKER     │
+   │ Inspector      │   │      Agent      │   │      Agent     │
+   │ READ-ONLY      │   │   READ/PROPOSE  │   │   READ/WRITE   │
+   └───────┬────────┘   └───────┬────────┘   └───────┬────────┘
+           │                    │                    │
+           │                    │                    ▼
+           │                    │             Repository Workspace
+           │                    │                    │
+           │                    │                    ▼
+           │                    │               Actual Git Diff
+           │                    │                    │
+           │                    │                    ▼
+           │                    │             ┌──────────────┐
+           │                    │             │   VERIFIER   │
+           │                    │             │  READ-ONLY   │
+           │                    │             └──────┬───────┘
+           │                    │                    │
+           └───────────┬────────┴────────────────────┘
+                       │
+                       ▼
+                Evidence / Results
+                       │
+                       ▼
+             ┌────────────────────────┐
+             │ FRONTIER ORCHESTRATOR  │
+             │ validate + merge      │
+             │ results into state     │
+             └───────────┬────────────┘
+                         │
+                         ▼
+                    SHARED STATE
+                         │
+          ┌──────────────┼──────────────┐
+          ▼              ▼              ▼
+       next task      recovery        replan
+
+
+COLLABORATIVE LOOP
+------------------
+
+   Agent reads current authorized state/context
+                       │
+                       ▼
+                  performs work
+                       │
+                       ▼
+                 returns evidence
+                       │
+                       ▼
+             Frontier validates result
+                       │
+                       ▼
+               Frontier updates state
+                       │
+                       ▼
+            next eligible collaborator
+
+
+IMPORTANT
+---------
+
+This is "shared state", NOT peer-to-peer collaboration.
+
+ALLOWED:
+  Agent → Frontier State → Agent
+
+FORBIDDEN:
+  Agent → Agent
+  Planner → Worker
+  Worker → Verifier
+  Verifier → Worker
+  Worker → Planner
+
+
+SHARED-STATE INVARIANTS
+-----------------------
+
+1. Frontier state is authoritative for workflow state.
+2. Accepted plan is authoritative for intended task structure.
+3. Workspace/Git diff is authoritative for actual code changes.
+4. Agent reports are evidence only.
+5. Only Frontier commits state transitions.
+6. Task scopes remain explicit and cannot be expanded by agents.
+7. Verification is required before completion.
+8. Completed tasks remain immutable by default.

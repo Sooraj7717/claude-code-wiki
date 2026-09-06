@@ -1,0 +1,126 @@
+FRONTIER — HIERARCHICAL (SUPERVISOR) FLOW
+=============================================
+
+Frontier is the single supervisor.
+Agents/capabilities perform isolated work and return evidence.
+Frontier alone controls state, transitions, scope, recovery, and completion.
+
+
+                         ┌───────────────────────────┐
+                         │     FRONTIER SUPERVISOR   │
+                         │  Deterministic Orchestrator│
+                         └─────────────┬─────────────┘
+                                       │
+                         ┌─────────────▼─────────────┐
+                         │       PROJECT STATE       │
+                         │ INIT / DISCOVER / PLAN    │
+                         │ EXECUTE / COMPLETE / ...  │
+                         └─────────────┬─────────────┘
+                                       │
+                              ┌────────▼────────┐
+                              │ Repository      │
+                              │ Inspector       │
+                              │ READ-ONLY       │
+                              └────────┬────────┘
+                                       │
+                                       ▼
+                              RepositoryContext
+                                       │
+                              ┌────────▼────────┐
+                              │     PLANNER      │
+                              │   LLM Reasoner   │
+                              └────────┬────────┘
+                                       │
+                                  ExecutionPlan
+                                       │
+                    ┌──────────────────▼──────────────────┐
+                    │      FRONTIER PLAN VALIDATION       │
+                    │ DAG / Dependencies / Scope /       │
+                    │ Conflicts / Policy                 │
+                    └──────────────────┬──────────────────┘
+                                       │
+                                       ▼
+                              ┌─────────────────┐
+                              │   READY TASK    │
+                              └────────┬────────┘
+                                       │
+                              ┌────────▼────────┐
+                              │      WORKER      │
+                              │   LLM / Tool     │
+                              └────────┬────────┘
+                                       │
+                                 WorkerResult
+                                       │
+                              ┌────────▼────────┐
+                              │ ACTUAL WORKSPACE │
+                              │     / GIT DIFF   │
+                              └────────┬────────┘
+                                       │
+                              ┌────────▼────────┐
+                              │ SCOPE VALIDATOR  │
+                              └────────┬────────┘
+                                       │
+                              ┌────────▼────────┐
+                              │     VERIFIER     │
+                              │ deterministic    │
+                              │ + semantic LLM   │
+                              │   only if needed │
+                              └────────┬────────┘
+                                       │
+                              VerificationResult
+                                       │
+                              ┌────────▼────────┐
+                              │ COMPLETION GATE  │
+                              └───────┬─┬────────┘
+                                      │ │
+                         success ─────┘ └──── failure
+                                      │
+                                      ▼
+                              ┌─────────────────┐
+                              │ COMPLETE / NEXT │
+                              │      TASK       │
+                              └─────────────────┘
+
+
+FAILURE / RECOVERY
+------------------
+
+                 Execution / Verification failure
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │    RECOVERY POLICY  │
+                    └───────┬─────────────┘
+                            │
+             ┌──────────────┼───────────────┬───────────────┐
+             ▼              ▼               ▼               ▼
+           RETRY          REPAIR          REPLAN        HUMAN_GATE
+             │              │               │               │
+             └──────┬───────┴───────────────┴───────────────┘
+                    │
+                    ▼
+                 Frontier
+                    │
+                    ▼
+              Validated next action
+
+
+AUTHORITY
+---------
+
+FRONTIER
+  - owns workflow state
+  - validates plans
+  - controls task readiness
+  - enforces write scope
+  - decides recovery
+  - owns completion
+
+AGENTS / CAPABILITIES
+  - inspect, reason, execute, verify
+  - return evidence / artifacts / requests
+  - never mutate Frontier state
+  - never call sibling agents directly
+
+WORKSPACE / GIT
+  - authoritative for actual source modifications
