@@ -1,0 +1,24 @@
+{
+  "plan_id": "PLAN-001",
+  "domain": "java-spring-uplift",
+  "objective": "Uplift Java and Spring Boot to the approved target versions",
+  "tasks": [
+    {
+      "task_id": "TASK-001",
+      "priority": 10,
+      "objective": "Upgrade the build toolchain and Java target",
+      "dependencies": [],
+      "scope": {
+        "include": ["pom.xml", "mvnw", "mvnw.cmd", ".mvn/**", "build.gradle", "gradlew", "gradlew.bat", "gradle/**"],
+        "exclude": [".uplift/**"]
+      },
+      "protected_contracts": [],
+      "allowed_contract_changes": [],
+      "verification": {
+        "commands": ["repository-defined build/test command"],
+        "acceptance": ["Target Java version is configured and the project compiles with the target JDK"]
+      },
+      "recovery_budget": {"retry": 1, "repair": 2, "replan": 1, "context_request": 1}
+    }
+  ]
+}

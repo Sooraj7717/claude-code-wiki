@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Uplift Orchestrator V6 — Stage Comparison</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f6f7f9;color:#1f2937}
+  .wrap{max-width:1400px;margin:0 auto;padding:32px}
+  h1{margin:0 0 8px;font-size:30px}
+  .subtitle{margin:0 0 28px;color:#667085}
+  .flow{display:flex;gap:12px;align-items:center;margin-bottom:28px;flex-wrap:wrap}
+  .stage{background:#fff;border:1px solid #d9dee7;border-radius:10px;padding:14px 18px;min-width:230px}
+  .stage strong{display:block;font-size:16px;margin-bottom:5px}
+  .stage span{font-size:13px;color:#667085}
+  .arrow{font-size:24px;color:#98a2b3}
+  .table-wrap{background:#fff;border:1px solid #d9dee7;border-radius:12px;overflow:auto}
+  table{border-collapse:collapse;width:100%;min-width:1050px}
+  th,td{padding:13px 14px;border-bottom:1px solid #eaecf0;vertical-align:top;text-align:left}
+  th{background:#f9fafb;font-size:13px;color:#475467;position:sticky;top:0}
+  td:first-child,th:first-child{position:sticky;left:0;background:#fff;font-weight:600;min-width:190px}
+  th:first-child{background:#f9fafb}
+  .yes{font-weight:700}
+  .later{color:#98a2b3}
+  .note{margin-top:22px;padding:16px 18px;background:#fff;border:1px solid #d9dee7;border-radius:10px}
+  .note strong{display:block;margin-bottom:7px}
+  ul{margin:7px 0 0 20px;padding:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Uplift Orchestrator V6 — What Gets Built at Each Stage</h1>
+  <p class="subtitle">Simple comparison of the three implementation milestones for Java/Spring uplift orchestration.</p>
+
+  <div class="flow">
+    <div class="stage"><strong>M1 — First Vertical Slice</strong><span>One real task, end to end</span></div>
+    <div class="arrow">→</div>
+    <div class="stage"><strong>M2 — Orchestration</strong><span>Multiple tasks, recovery, resume</span></div>
+    <div class="arrow">→</div>
+    <div class="stage"><strong>M3 — Control Plane</strong><span>Production UI, API, security, audit</span></div>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Capability</th>
+        <th>M1 — First Vertical Slice</th>
+        <th>M2 — Multi-Task Orchestration</th>
+        <th>M3 — Production Control Plane</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Primary purpose</td><td>Prove one complete uplift task works</td><td>Operate a real multi-task uplift workflow</td><td>Make the system secure, observable and operator-friendly</td></tr>
+      <tr><td>Run lifecycle</td><td>Basic state machine</td><td>Full lifecycle + recovery/resume</td><td>Hardened persistence and concurrency</td></tr>
+      <tr><td>Planning</td><td>One accepted immutable plan</td><td>Plan versions + replanning</td><td>Full plan visibility and audit</td></tr>
+      <tr><td>Tasks</td><td>One task</td><td>Multiple tasks in a DAG</td><td>Full task management/visibility</td></tr>
+      <tr><td>Attempts</td><td>One Attempt on happy path</td><td>Multiple Attempts + history</td><td>Rich Attempt investigation UI</td></tr>
+      <tr><td>Implementer</td><td>Real Claude Code invocation</td><td>Repeated bounded invocations</td><td>Hardened permissions and enforcement</td></tr>
+      <tr><td>Verifier</td><td>Independent Verifier</td><td>Verifier participates in recovery decisions</td><td>Verification center + audit evidence</td></tr>
+      <tr><td>Workspace delta</td><td>Baseline + actual delta</td><td>Delta per Attempt</td><td>Full diff exploration in UI</td></tr>
+      <tr><td>Scope checking</td><td>Yes</td><td>Yes, across Attempts/recovery</td><td>Visible and auditable</td></tr>
+      <tr><td>Contract integrity</td><td>Protected contracts + unauthorized-change gate</td><td>Preserved across replans</td><td>Dedicated contract viewer</td></tr>
+      <tr><td>Recovery</td><td>Basic failure handling</td><td>RETRY / REPAIR / REPLAN / CONTEXT_REQUEST / BLOCK / HUMAN_GATE / FAIL</td><td>Recovery history and operator controls</td></tr>
+      <tr><td>Recovery budgets</td><td class="later">Limited</td><td>Yes</td><td>Visible/auditable</td></tr>
+      <tr><td>Failure signatures</td><td class="later">Not central</td><td>Yes, repeated-equivalent failure detection</td><td>Visible in Attempt/recovery views</td></tr>
+      <tr><td>Resume/reconciliation</td><td class="later">Basic/non-goal</td><td>Yes</td><td>Hardened against interruption/concurrency</td></tr>
+      <tr><td>Human Gates</td><td>Basic gate</td><td>Durable gates + decisions</td><td>Central Human Gate queue</td></tr>
+      <tr><td>Project verification</td><td>Basic final acceptance</td><td>Full project verification</td><td>Verification center + audit</td></tr>
+      <tr><td>Persistence</td><td>state.json + events.jsonl</td><td>Durable workflow history</td><td>Atomicity, consistency, corruption/recovery hardening</td></tr>
+      <tr><td>REST API</td><td>Minimal Run/Task/Attempt/Gate/Diff/Verification APIs</td><td>Plans, recovery, pause/resume, SSE</td><td>Complete, versioned, command-oriented control API</td></tr>
+      <tr><td>Authentication</td><td class="later">Not full production auth</td><td class="later">Not primary focus</td><td>Production authentication where required</td></tr>
+      <tr><td>Authorization</td><td class="later">Minimal</td><td class="later">Basic boundaries</td><td>Explicit operator permissions</td></tr>
+      <tr><td>Security enforcement</td><td>Core role/tool restrictions + dangerous-command hooks</td><td>Applied across recovery/resume</td><td>Hardened + security audit events</td></tr>
+      <tr><td>Dashboard</td><td>Basic run list</td><td>Run/recovery overview</td><td>Full operator dashboard</td></tr>
+      <tr><td>Run workspace UI</td><td>Basic status/evidence view</td><td>Tasks, recovery, live events</td><td>Complete operator workspace</td></tr>
+      <tr><td>DAG UI</td><td class="later">No</td><td>Yes</td><td>Interactive/full</td></tr>
+      <tr><td>Attempt explorer</td><td class="later">Basic</td><td>History available</td><td>Detailed investigation view</td></tr>
+      <tr><td>Diff viewer</td><td>Basic diff</td><td>Attempt/task diffs</td><td>Full diff exploration</td></tr>
+      <tr><td>Contract viewer</td><td class="later">Evidence only</td><td class="later">Available through artifacts</td><td>Dedicated UI</td></tr>
+      <tr><td>Verification center</td><td>Basic result</td><td>Task + project verification</td><td>Deterministic vs semantic vs acceptance views</td></tr>
+      <tr><td>Event timeline</td><td>Yes</td><td>Live SSE timeline</td><td>Filterable audit explorer</td></tr>
+      <tr><td>Artifact browser</td><td class="later">Basic</td><td>Artifacts available</td><td>Full operator browser</td></tr>
+      <tr><td>Observability</td><td class="later">Basic logs</td><td>Workflow events</td><td>Structured logs + operational metrics</td></tr>
+      <tr><td>Java/Spring focus</td><td>Java/Spring uplift task</td><td>Real Java/Spring migration workflow</td><td>Production-grade Java/Spring uplift operation</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note">
+    <strong>What you should see after each milestone</strong>
+    <ul>
+      <li><b>M1:</b> You can start a run and watch one Java/Spring uplift task go through Plan → Implement → Delta → Verify → Complete.</li>
+      <li><b>M2:</b> You can see a real DAG, multiple tasks and Attempts, recovery/replan history, Human Gates, resume, and live workflow events.</li>
+      <li><b>M3:</b> You get the complete operator control plane: dashboard, Run Workspace, DAG, Attempts, contracts, verification, diffs, gates, artifacts, audit, security and operational telemetry.</li>
+    </ul>
+  </div>
+
+  <div class="note">
+    <strong>What is deliberately NOT in V6</strong>
+    Parallel execution, Git worktrees, Agent Teams, distributed workers, multi-repository orchestration, automatic commits/pushes/PRs, and autonomous workflow topology remain V7+ candidates.
+  </div>
+</div>
+</body>
+</html>

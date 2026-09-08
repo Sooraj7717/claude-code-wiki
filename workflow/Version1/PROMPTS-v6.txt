@@ -1,0 +1,351 @@
+Step 0 — Establish the role
+-----------------------------------------------------------------
+
+You are implementing the Uplift Orchestrator for Java/Spring application modernization.
+
+This is an incremental implementation effort.
+
+You must:
+
+* treat the provided architecture/specification as authoritative
+* preserve previously implemented behavior unless the new milestone explicitly changes it
+* implement only the current milestone
+* not invent additional workflow capabilities
+* not skip architectural boundaries for convenience
+* keep the Orchestrator authoritative over workflow state
+* treat Claude Code agents as workers/evidence producers, not workflow authorities
+* use Java/Spring for the Orchestrator implementation
+* keep Java/Spring uplift semantics as the application-migration domain
+
+Do not begin implementation until I explicitly give you the implementation milestone and tell you to proceed.
+
+First, inspect and understand the material I provide.
+Respond with your understanding, identified dependencies, contradictions, and questions.
+Do not modify files yet.
+
+
+Step 1 — Feed the V6 baseline (uplift-orchestrator-v6-java-spring)
+---------------------------------------------------------------------------
+
+This is the V6 architectural baseline.
+
+Read and analyze the complete package.
+
+Your task at this point is ONLY to establish the architectural baseline.
+
+Do not implement anything.
+
+Determine and report:
+
+1. The authoritative architecture.
+2. The workflow/state ownership model.
+3. The Run → Plan → Task → Attempt model.
+4. The Claude Code integration boundary.
+5. The API boundary.
+6. The UI boundary.
+7. Persistence and event requirements.
+8. Security and enforcement boundaries.
+9. Which responsibilities belong to the Orchestrator versus agents.
+10. Any explicit V6 invariants.
+11. Any dependencies that future implementation milestones must preserve.
+
+Do not propose a redesigned architecture.
+
+Do not modify files.
+
+At the end, provide a concise "V6 Baseline Understood" summary and list any genuine ambiguities or contradictions you found.
+
+
+Step 2 — Give M1 specification (uplift-orchestrator-v6-stage1-java-spring)
+---------------------------------------------------------------------------
+
+This is the V6 M1 implementation specification.
+
+You already have the V6 architectural baseline.
+
+Now:
+
+1. Read the M1 specification completely.
+2. Map every M1 requirement to the V6 architecture.
+3. Identify what must be implemented.
+4. Identify what is explicitly a non-goal.
+5. Identify any conflict between M1 and the V6 baseline.
+
+Do NOT implement yet.
+
+Produce:
+
+* M1 implementation scope
+* components to create/change
+* workflow states
+* API surface
+* UI surface
+* persistence requirements
+* Claude Code integration requirements
+* security requirements
+* tests required
+* explicit non-goals
+* assumptions
+
+Do not expand the scope beyond M1.
+
+Wait for my explicit approval before modifying the repository.
+
+
+Step 3 — Tell it to implement M1
+---------------------------------------------------------------------------
+
+Proceed with V6 M1 implementation.
+
+Implement only the approved M1 specification against the V6 architecture.
+
+Before changing files:
+
+1. Inspect the existing repository.
+2. Identify the current implementation baseline.
+3. Confirm the repository is in a safe state.
+4. Create a concise implementation plan.
+
+Then implement M1 incrementally.
+
+Requirements:
+
+* preserve the V6 architecture
+* do not implement M2 or M3 functionality
+* do not introduce parallel execution
+* do not introduce Git worktrees
+* do not introduce Agent Teams
+* do not introduce distributed execution
+* do not introduce automatic commits/pushes/PRs
+* do not bypass the Orchestrator workflow engine
+* do not let agents mutate workflow state
+
+After implementation:
+
+1. Run the required tests.
+2. Run the Java/Spring acceptance scenario.
+3. Inspect actual workspace changes.
+4. Verify the implementation against the M1 specification.
+5. Report:
+
+   * files changed
+   * functionality implemented
+   * tests executed
+   * tests passed/failed
+   * known limitations
+   * any deviations from the specification
+
+Do not declare M1 complete merely because compilation succeeds.
+
+
+Step 4 — Freeze M1
+---------------------------------------------------------------------------
+
+M1 is now the implementation baseline for the next milestone.
+
+Do not modify anything.
+
+Inspect the current repository and produce a concise M1 baseline report containing:
+
+* implemented architecture
+* implemented workflow behavior
+* API endpoints
+* UI capabilities
+* persistence model
+* Claude Code integration
+* security boundaries
+* tests
+* known limitations
+* current Git/workspace state
+
+Explicitly identify anything that must be preserved when implementing M2.
+
+Do not implement M2 yet.
+
+
+Step 5 — Feed M2 (uplift-orchestrator-v6-stage2-java-spring)
+---------------------------------------------------------------------------
+
+This is the V6 M2 implementation specification.
+
+The current repository contains the completed M1 implementation.
+
+Treat:
+
+1. V6 base architecture
+2. current M1 implementation
+3. M2 specification
+
+as the combined baseline.
+
+Do NOT implement yet.
+
+Analyze how M2 extends M1.
+
+Identify:
+
+* new domain concepts
+* changed state transitions
+* multi-task DAG requirements
+* scheduling/readiness requirements
+* Attempt history requirements
+* recovery behavior
+* retry/repair/replan/context-request budgets
+* failure signatures
+* Human Gates
+* resume/reconciliation
+* Plan versioning
+* project verification
+* API additions
+* SSE requirements
+* UI additions
+* tests
+* explicit M2 non-goals
+
+Pay particular attention to preserving M1 behavior.
+
+Do not redesign V6.
+
+Do not introduce M3 or V7 capabilities.
+
+Report any contradiction between:
+
+* V6 architecture
+* existing M1 implementation
+* M2 specification
+
+Do not modify files.
+
+
+Step 6 — Implement M2
+---------------------------------------------------------------------------
+
+Proceed with V6 M2 implementation.
+
+The current repository contains the completed M1 implementation.
+
+Implement M2 as an incremental extension of M1.
+
+Rules:
+
+* preserve M1 functionality
+* preserve V6 architectural boundaries
+* implement only M2
+* do not implement M3
+* do not implement V7
+* do not introduce parallel execution
+* do not introduce Git worktrees
+* do not introduce Agent Teams
+* do not introduce distributed execution
+* do not introduce automatic Git commits/pushes/PRs
+
+Implement in logical increments:
+
+1. multi-task domain
+2. DAG validation/readiness
+3. Attempt history
+4. recovery classification/budgets
+5. failure signatures
+6. replanning
+7. resume/reconciliation
+8. project completion
+9. API/SSE
+10. UI
+11. hardening/tests
+
+After each logical increment, run appropriate tests.
+
+At completion, verify the entire M2 specification, not only the newly added functionality.
+
+Report:
+
+* implementation summary
+* files changed
+* migrations/schema changes
+* tests
+* failures
+* deviations
+* remaining limitations
+
+Step 7 — M3 (uplift-orchestrator-v6-stage3-java-spring)
+---------------------------------------------------------------------------
+
+This is the V6 M3 implementation specification.
+
+The current repository contains the completed M1 + M2 implementation.
+
+Treat:
+
+1. V6 architecture
+2. M1
+3. M2
+4. M3 specification
+
+as the combined baseline.
+
+Analyze M3 without modifying files.
+
+Identify:
+
+* workflow hardening
+* persistence consistency
+* concurrency protection for API commands
+* security hardening
+* agent/workflow-state protection
+* API completion
+* authentication/authorization boundaries
+* full UI control-plane requirements
+* contract viewer
+* verification center
+* Human Gate center
+* artifact browser
+* event/audit explorer
+* observability
+* operational metrics
+* Java/Spring acceptance requirements
+* M3 non-goals
+
+Explicitly verify that M3 does not accidentally introduce V7 capabilities such as:
+
+* parallel Task execution
+* Git worktrees
+* concurrent Agents
+* distributed execution
+* Agent Teams
+
+Do not modify files.
+
+---------------------------------------------------------------
+
+Proceed with V6 M3 implementation.
+
+Implement only the approved M3 specification against the existing M1 + M2 implementation.
+
+M3 is the final V6 milestone.
+
+Priorities:
+
+1. workflow hardening
+2. security/enforcement
+3. API completeness
+4. operator UI
+5. audit/observability
+6. full testing
+7. realistic Java/Spring acceptance
+
+Preserve all existing V6 behavior.
+
+Do NOT implement V7 functionality.
+
+In particular, do not introduce:
+
+* parallel Task execution
+* Git worktrees
+* concurrent implementation Attempts
+* distributed workers
+* Agent Teams
+* automatic Git commits/pushes/PRs
+* multi-repository orchestration
+
+After implementation, run the complete V6 test/acceptance suite and produce a final V6 compliance report against the architecture and M1/M2/M3 specifications.
+

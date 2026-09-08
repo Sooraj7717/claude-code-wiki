@@ -1,0 +1,13 @@
+Apache-2.0-only OpenRewrite engine/recipe policy
+rewrite-spring excluded
+Spring migration remains in scope as Planner residual work where needed
+One OpenRewrite Task per affected file
+P1 priority for OpenRewrite-derived Tasks
+Planner reasoning + structured ProposedPlan
+Discovery produces in-memory DiscoveryFacts
+Discovery persistence only with /uplift --force
+Fixed project-level discovery/ directory
+Existing Discovery JSON files overwritten
+No .uplift/runs/<run-id>/discovery/
+Added the explicit Discovery Contract
+Updated lifecycle, architecture decisions, backlog, preparation, planning, and skill documentation
