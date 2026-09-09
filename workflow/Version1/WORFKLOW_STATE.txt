@@ -1,0 +1,44 @@
+START
+   │
+   ▼
+INITIALIZING
+   │
+   ▼
+PREPARING
+   │
+   │  OpenRewrite
+   │  Apache-2.0 recipes only
+   │
+   ▼
+DISCOVERING
+   │ ├── DiscoveryFacts
+   │
+   │
+   ▼
+PLANNING
+   │
+   │  Preparation Evidence
+   │  + Discovery
+   │  + Constraints
+   │  + History
+   │
+   ▼
+PROPOSED PLAN
+   │
+   ▼
+PLAN GATE
+   │
+   ▼
+AUTHORIZED PLAN
+   │
+   ▼
+/execute
+   │
+   ▼
+V6 TASK EXECUTION
+   │
+   ▼
+VERIFY
+   │
+   ▼
+COMPLETE
