@@ -1,0 +1,142 @@
+ DISCOVERING
+
+1. repository.json
+
+Basic repository identity and structure.
+
+{
+  "repository": "...",
+  "baseline": "...",
+  "buildSystem": "maven",
+  "modules": [
+    "app",
+    "common"
+  ],
+  "sourceRoots": [
+    "src/main/java",
+    "src/test/java"
+  ]
+}
+
+This establishes the baseline against which everything else is interpreted.
+
+2. build.json
+
+Build-system facts.
+
+For Maven, for example:
+
+{
+  "type": "maven",
+  "javaVersion": "17",
+  "packaging": "jar",
+  "modules": ["app", "common"],
+  "profiles": [...]
+}
+
+This gives the Planner the build context.
+
+3. dependencies.json
+
+Resolved/declared dependency information.
+
+For example:
+
+{
+  "dependencies": [
+    {
+      "groupId": "org.springframework.boot",
+      "artifactId": "spring-boot-starter-web",
+      "version": "2.7.18"
+    }
+  ]
+}
+
+This is particularly important because OpenRewrite may identify source transformations while Discovery establishes what dependencies actually exist.
+
+4. source-inventory.json
+
+The source-level inventory.
+
+For example:
+
+{
+  "files": [
+    {
+      "path": "src/main/java/com/acme/Foo.java",
+      "language": "java",
+      "package": "com.acme"
+    }
+  ],
+  "counts": {
+    "java": 124,
+    "test": 48
+  }
+}
+
+This becomes particularly important for our one-file → one OpenRewrite Task grouping.
+
+5. frameworks.json
+
+Detected frameworks and versions.
+
+For example:
+
+{
+  "frameworks": [
+    {
+      "name": "Spring Boot",
+      "version": "2.7.18"
+    },
+    {
+      "name": "Hibernate",
+      "version": "5.x"
+    }
+  ]
+}
+
+This should be discovery evidence, not an automatic migration decision.
+
+6. constraints.json
+
+Project-specific constraints discovered from the repository.
+
+Examples:
+
+protected APIs
+generated sources
+excluded directories
+build constraints
+test constraints
+configuration constraints
+
+For example:
+
+{
+  "excludedPaths": [
+    "generated/**"
+  ],
+  "protectedPaths": [
+    "src/main/resources/public-api/**"
+  ]
+}
+
+This is particularly useful to the Planner when deciding whether an OpenRewrite-derived change can actually become a Task.
+
+7. contracts.json
+
+If V6/V7 already has a concept of protected contracts, Discovery should identify them here.
+
+For example:
+
+{
+  "contracts": [
+    {
+      "type": "REST_API",
+      "location": "src/main/java/com/acme/api",
+      "protected": true
+    }
+  ]
+}
+
+This allows Planning to reason about migration impact.
